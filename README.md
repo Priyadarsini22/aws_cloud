@@ -4,7 +4,7 @@ This repository hosts a **Tic Tac Toe** web application deployed on an **AWS EC2
 
 ---
 
-## 🌐 Live Demo
+## 🌐 Live  Demo
 Access the live application here:  
 **[http://100.27.174.240/](http://100.27.174.240/)**
 
