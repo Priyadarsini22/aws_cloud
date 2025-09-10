@@ -1,4 +1,4 @@
-name: Deploy React Tic Tac Toe to EC2
+name: Deploy React App to EC2 with Nginx
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
 
 jobs:
   build-and-deploy:
-    runs-on: self-hosted   # your EC2 runner
+    runs-on: self-hosted
 
     steps:
     - name: Checkout code
@@ -18,13 +18,8 @@ jobs:
     - name: Build React app
       run: npm run build
 
-    - name: Deploy with PM2 + Serve
+    - name: Copy build to Nginx folder
       run: |
-        # Stop old version (ignore error if not running)
-        pm2 delete tic-tac-toe || true
-
-        # Serve the build folder on port 3000
-        pm2 start npx --name "tic-tac-toe" -- serve -s build -l 3000
-
-        # Save PM2 config so it auto-starts after reboot
-        pm2 save
+        sudo rm -rf /var/www/html/*
+        sudo cp -r build/* /var/www/html/
+        sudo systemctl restart nginx
