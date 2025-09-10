@@ -47,7 +47,7 @@ export default function App() {
         {winner ? (
           <h2>🏆 {winner} Wins!</h2>
         ) : squares.every(Boolean) ? (
-          <h2>🤝 It’s a Draw!</h2>
+          <h2>🤝 It’s a Drawww!</h2>
         ) : (
           <h2>Next Player: {xIsNext ? "❌ X" : "⭕ O"}</h2>
         )}
