@@ -6,16 +6,25 @@ on:
 
 jobs:
   build-and-deploy:
-    runs-on: self-hosted
+    runs-on: self-hosted  # This assumes your EC2 instance is configured as a self-hosted runner
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Build React app
-      run: npm run build
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18' # or your app's version
 
-    - name: Copy build to Nginx folder
-      run: |
-        sudo cp -r build/* /var/www/html/
-        sudo systemctl restart nginx
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build React app
+        run: npm run build
+
+      - name: Deploy build to Nginx folder
+        run: |
+          sudo rm -rf /var/www/html/*
+          sudo cp -r build/* /var/www/html/
+          sudo systemctl restart nginx
