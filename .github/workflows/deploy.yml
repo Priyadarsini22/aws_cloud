@@ -16,17 +16,26 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '18'
-          cache: 'npm'   # 💡 Enables automatic npm cache!
+          cache: 'npm'  # enables caching for faster installs
 
       - name: Install dependencies
-        run: npm ci   # This will now be much faster
+        run: npm ci
 
       - name: Build React app
         run: npm run build
 
-      - name: Deploy build to Nginx folder
+      - name: Deploy build to Nginx
         run: |
+          # Ensure Nginx root folder exists
           sudo mkdir -p /var/www/html
+          # Clean old build
           sudo rm -rf /var/www/html/*
+          # Copy new files
           sudo cp -r build/* /var/www/html/
+          # Restart Nginx
           sudo systemctl restart nginx
+
+      - name: Verify deployment
+        run: |
+          echo "Deployment completed successfully!"
+          curl -I http://localhost | head -n 5
