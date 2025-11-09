@@ -6,7 +6,7 @@ on:
 
 jobs:
   build-and-deploy:
-    runs-on: self-hosted  # This assumes your EC2 instance is configured as a self-hosted runner
+    runs-on: self-hosted
 
     steps:
       - name: Checkout code
@@ -15,7 +15,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18' # or your app's version
+          node-version: '18'
 
       - name: Install dependencies
         run: npm ci
@@ -25,6 +25,7 @@ jobs:
 
       - name: Deploy build to Nginx folder
         run: |
+          sudo mkdir -p /var/www/html
           sudo rm -rf /var/www/html/*
           sudo cp -r build/* /var/www/html/
           sudo systemctl restart nginx
